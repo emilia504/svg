@@ -12,4 +12,16 @@ public class Point {
         return napis;
     }
 
+    public void translate(double dx, double dy) {
+        x = x + dx;
+        y += dy;
+    }
+
+    public Point translated(double dx, double dy) {
+        Point point = new Point();
+        point.x += dx;
+        point.y += dy;
+        return point;
+    }
+
 }

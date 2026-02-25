@@ -8,5 +8,14 @@ public class Main {
         Point point1 = new Point();
         System.out.println(point1.toString());
         System.out.println(point1.toSvg());
+
+        Point point2 = new Point();
+        System.out.println("Punkt oryginalny");
+        System.out.println(point2);
+        System.out.println("Punkt przesunięty");
+        point2.translate(1, 1);
+        System.out.println(point2);
+        System.out.println(point2.translated(2,2));
     }
+
 }
