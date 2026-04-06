@@ -1,5 +1,9 @@
 public class Main {
     public static void main(String[] args) {
+        testLab1();
+    }
+
+    private static void testLab1() {
         System.out.printf("Hello and welcome!\n");
         Point point = new Point();
         /*
@@ -26,6 +30,21 @@ public class Main {
         s1.a = point1;
         s1.b = point2;
         System.out.println(s1.length());
+
+        Segment s2 = new Segment();
+        s2.a = point2;
+        s2.b = point;
+
+        Segment s3 = new Segment();
+        s3.a = point1;
+        s3.b = point;
+
+        // Tworzenie tablicy Segmentów
+        Segment[] segments = {s1, s2, s3};
+
+        // Znajdowanie i wyświetlanie najdłuższego segmentu
+        Segment longest = Segment.findLongestSegment(segments);
+        System.out.println("Longest segment length: " + longest.length());
     }
 
 }
