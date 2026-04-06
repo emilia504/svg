@@ -1,19 +1,19 @@
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-public class Person {
+public class Person implements Comparable<Person> {
 
     private String firstName;
     private String lastName;
     private LocalDate birthDay;
-    private Set<Person> children;
+    private SortedSet<Person> children;
 
     public Person(String firstName, String lastName, LocalDate birthDay) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDay = birthDay;
-        this.children = new HashSet<>();
+        this.children = new TreeSet<>();
     }
 
     public boolean adopt(Person child) {
@@ -31,15 +31,15 @@ public class Person {
     }
 
     public Person getYoungestChild() {
-        if (children.isEmpty()) return null;
-        Person youngest = (Person) children.toArray()[0];
-        for (Person child : children) {
-            //System.out.println(child);
-            if (youngest.birthDay.compareTo(child.birthDay) < 0) {
-                youngest = child;
-            }
-        }
-        return youngest;
+        if (children.isEmpty())
+            return null;
+
+        return children.last();
+    }
+
+    @Override
+    public int compareTo(Person o) {
+        return this.birthDay.compareTo(o.birthDay);
     }
 
 }
