@@ -5,8 +5,10 @@ public class Family {
 
     private Map<String, Person> people = new HashMap<>();
 
-    public void add(Person person) {
-        people.put(person.getFullName(), person);
+    public void add(Person... people){
+        for (Person person : people){
+            this.people.put(person.getFullName(), person);
+        }
     }
 
     public Person get(String name) {

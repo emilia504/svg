@@ -41,6 +41,9 @@ public class Main {
         System.out.println("get Adam Nowak " + family.get("Adam Nowak"));
         System.out.println("get Jan Nowak " + family.get("Jan Nowak"));
         System.out.println("get Piotr Nowakowski " + family.get("Piotr Nowakowski"));
+
+        family.add(parent, child, child1, child2, child3);
+        System.out.printf("%s",family.get("Adam Nowak"));
     }
 
 }
