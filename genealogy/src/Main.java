@@ -12,6 +12,11 @@ public class Main {
         for (Person value : people) {
             System.out.println(value);
         }
+        Person parent = new Person("Piotr","Nowakowski",LocalDate.of(2000,5,21));
+        Person child = new Person("Anna","Kowal",LocalDate.of(2003,2,10));
+        System.out.println(parent.adopt(child));
+        System.out.println(parent.adopt(child));
+        System.out.println(parent);
     }
 
 }
