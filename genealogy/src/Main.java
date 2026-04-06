@@ -34,7 +34,7 @@ public class Main {
             System.out.println(kid);
         }
 
-        System.out.println("Rodzina");
+        System.out.println("\nRodzina");
         Family family = new Family();
         family.add(person);
         family.add(child1);
@@ -43,7 +43,18 @@ public class Main {
         System.out.println("get Piotr Nowakowski " + family.get("Piotr Nowakowski"));
 
         family.add(parent, child, child1, child2, child3);
-        System.out.printf("%s",family.get("Adam Nowak"));
+        System.out.printf("%s\n", family.get("Adam Nowak"));
+
+        Person child4 = new Person("Maria", "Nowak", LocalDate.of(2019, 8, 25));
+        Person child5 = new Person("Maria", "Nowak", LocalDate.of(2021, 8, 25));
+
+        family.add(child4,  child5);
+
+        Person[] familyMembers = family.get("Maria Nowak");
+        if (familyMembers != null)
+            for (Person member : familyMembers) {
+                System.out.println(member);
+            }
     }
 
 }
