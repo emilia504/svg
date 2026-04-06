@@ -5,18 +5,27 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        Person person = new Person("Adam","Nowak",LocalDate.of(2000,5,21));
-        List<Person>people = new ArrayList<>();
+        Person person = new Person("Adam", "Nowak", LocalDate.of(2000, 5, 21));
+        List<Person> people = new ArrayList<>();
         people.add(person);
-        people.add(new Person("Pawel","Kowalski",LocalDate.of(2003,2,10)));
+        people.add(new Person("Pawel", "Kowalski", LocalDate.of(2003, 2, 10)));
         for (Person value : people) {
             System.out.println(value);
         }
-        Person parent = new Person("Piotr","Nowakowski",LocalDate.of(2000,5,21));
-        Person child = new Person("Anna","Kowal",LocalDate.of(2003,2,10));
+        Person parent = new Person("Piotr", "Nowakowski", LocalDate.of(2000, 5, 21));
+        Person child = new Person("Anna", "Kowal", LocalDate.of(2003, 2, 10));
         System.out.println(parent.adopt(child));
         System.out.println(parent.adopt(child));
-        System.out.println(parent);
+        System.out.println("Rodzic: " + parent);
+        Person child1 = new Person("Jan", "Nowak", LocalDate.of(2010, 6, 13));
+        Person child2 = new Person("Daniel", "Nowak", LocalDate.of(2025, 7, 18));
+        Person child3 = new Person("Marcin", "Nowak", LocalDate.of(2020, 8, 25));
+        parent.adopt(child);
+        parent.adopt(child1);
+        parent.adopt(child2);
+        parent.adopt(child3);
+        System.out.println("Rodzic: " + parent);
+        System.out.println("Najmłodsze dziecko: " + parent.getYoungestChild());
     }
 
 }
