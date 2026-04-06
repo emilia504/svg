@@ -27,3 +27,10 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+/.idea/.gitignore
+/genealogy/genealogy.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/svg.iml
+/svg.iml
+/.idea/vcs.xml
