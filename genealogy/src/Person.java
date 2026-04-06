@@ -47,4 +47,8 @@ public class Person implements Comparable<Person> {
         return sortedChildren;
     }
 
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+
 }

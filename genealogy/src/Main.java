@@ -33,6 +33,14 @@ public class Main {
         for (Person kid : parent.getChildren()) {
             System.out.println(kid);
         }
+
+        System.out.println("Rodzina");
+        Family family = new Family();
+        family.add(person);
+        family.add(child1);
+        System.out.println("get Adam Nowak " + family.get("Adam Nowak"));
+        System.out.println("get Jan Nowak " + family.get("Jan Nowak"));
+        System.out.println("get Piotr Nowakowski " + family.get("Piotr Nowakowski"));
     }
 
 }
