@@ -12,6 +12,7 @@ public class Main {
         for (Person value : people) {
             System.out.println(value);
         }
+
         Person parent = new Person("Piotr", "Nowakowski", LocalDate.of(2000, 5, 21));
         Person child = new Person("Anna", "Kowal", LocalDate.of(2003, 2, 10));
         System.out.println(parent.adopt(child));
@@ -26,6 +27,12 @@ public class Main {
         parent.adopt(child3);
         System.out.println("Rodzic: " + parent);
         System.out.println("Najmłodsze dziecko: " + parent.getYoungestChild());
+
+        System.out.println("\nLista posortowana");
+        System.out.println(parent.getChildren());
+        for (Person kid : parent.getChildren()) {
+            System.out.println(kid);
+        }
     }
 
 }

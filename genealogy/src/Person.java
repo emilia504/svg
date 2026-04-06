@@ -1,6 +1,5 @@
 import java.time.LocalDate;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Person implements Comparable<Person> {
 
@@ -40,6 +39,12 @@ public class Person implements Comparable<Person> {
     @Override
     public int compareTo(Person o) {
         return this.birthDay.compareTo(o.birthDay);
+    }
+
+    public List<Person> getChildren() {
+        List<Person> sortedChildren = new ArrayList<>(children);
+        Collections.sort(sortedChildren);
+        return sortedChildren;
     }
 
 }
