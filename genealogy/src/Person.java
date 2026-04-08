@@ -1,6 +1,8 @@
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class Person implements Comparable<Person> {
 
@@ -20,10 +22,8 @@ public class Person implements Comparable<Person> {
     }
 
     public Person(String firstName, String lastName, LocalDate birthDate, LocalDate deathDate) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.children = new TreeSet<>();
+        this(firstName, lastName, birthDate);
+
         this.deathDate = deathDate;
     }
 
@@ -63,7 +63,7 @@ public class Person implements Comparable<Person> {
         return this.firstName + " " + this.lastName;
     }
 
-    public static Person fromCsvLine(String line){
+    public static Person fromCsvLine(String line) {
         String name;
         String surname;
         String foundBdate;
@@ -72,6 +72,11 @@ public class Person implements Comparable<Person> {
         String parent1surname;
         String parent2name;
         String parent2surname;
+
+        while(line.contains(",,")){
+            line = line.substring(0, line.indexOf(",,")) + ",   ," + line.substring(line.indexOf(",,")+2);
+        }
+        line = line + " ";
 
         String[] arr = line.split(",");
         // Anna Dąbrowska,07.02.1930,22.12.1991,Ewa Kowalska,Marek Kowalski
@@ -85,26 +90,41 @@ public class Person implements Comparable<Person> {
         foundBdate = arr[1];
         foundDdate = arr[2];
 
-        nameAndSurname = arr[3].split(" ");
+        if(!arr[3].isBlank()) {
+            nameAndSurname = arr[3].split(" ");
+            parent1name = nameAndSurname[0];
+            parent1surname = nameAndSurname[1];
+        }
 
-        parent1name = nameAndSurname[0];
-        parent1surname = nameAndSurname[1];
 
-        nameAndSurname = arr[4].split(" ");
 
-        parent2name = nameAndSurname[0];
-        parent2surname = nameAndSurname[1];
+        if(!arr[4].isBlank())
+        {
+            nameAndSurname = arr[4].split(" ");
 
-        if(foundDdate.isEmpty()){
+            parent2name = nameAndSurname[0];
+            parent2surname = nameAndSurname[1];
+        }
+
+        if(foundDdate.isBlank()){
             return new Person(name, surname, LocalDate.parse(foundBdate, pattern));
         }
         else{
-            return new Person(name, surname,
-                    LocalDate.parse(foundBdate, pattern), LocalDate.parse(foundDdate, pattern));
+            try{
+                if (LocalDate.parse(foundDdate, pattern).isBefore(LocalDate.parse(foundBdate, pattern))) throw new NegativeLifespanException("negative lifespan");
+                return new Person(name, surname,
+                        LocalDate.parse(foundBdate, pattern), LocalDate.parse(foundDdate, pattern));
+            }
+            catch (NegativeLifespanException exception){
+                exception.getMessage();
+                System.exit(-1);
+                return new Person(name, surname, LocalDate.parse(foundBdate, pattern));
+            }
+
         }
     }
 
-    public static Person methodSubstring(String line) {
+    public static Person methodSubstring(String line) throws NegativeLifespanException {
         String name;
         String surname;
         String foundBDate;
@@ -131,9 +151,25 @@ public class Person implements Comparable<Person> {
             return new Person(name, surname, LocalDate.parse(foundBDate, pattern));
         }
         else{
-            return new Person(name, surname,
+           return new Person(name, surname,
                     LocalDate.parse(foundBDate, pattern), LocalDate.parse(foundDDate, pattern));
         }
     }
+    public static List<Person> fromCsv(String path) throws FileNotFoundException, IOException {
+        File f = new File(path);
 
+        BufferedReader fr = new BufferedReader(new FileReader(f));
+        List<Person> ret = new ArrayList<Person>();
+
+        fr.readLine();
+        String line = fr.readLine();
+        while (line != null && !line.isBlank())
+        {
+            ret.add(fromCsvLine(line));
+
+            line = fr.readLine();
+        }
+
+        return ret;
+    }
 }
