@@ -5,6 +5,16 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
+
+        //testLab5();
+        System.out.println("from");
+        System.out.println(Person.fromCsvLine("Anna Dąbrowska,07.02.1930,22.12.1991,Ewa Kowalska,Marek Kowalski"));
+        System.out.println("substring");
+        System.out.println(Person.methodSubstring("Anna Dąbrowska,07.02.1930,22.12.1991,Ewa Kowalska,Marek Kowalski"));
+
+    }
+
+    private static void testLab5() {
         Person person = new Person("Adam", "Nowak", LocalDate.of(2000, 5, 21));
         List<Person> people = new ArrayList<>();
         people.add(person);
@@ -48,13 +58,17 @@ public class Main {
         Person child4 = new Person("Maria", "Nowak", LocalDate.of(2019, 8, 25));
         Person child5 = new Person("Maria", "Nowak", LocalDate.of(2021, 8, 25));
 
-        family.add(child4,  child5);
+        family.add(child4, child5);
 
         Person[] familyMembers = family.get("Maria Nowak");
         if (familyMembers != null)
             for (Person member : familyMembers) {
                 System.out.println(member);
             }
+    }
+
+    public static void testLab6() {
+
     }
 
 }
