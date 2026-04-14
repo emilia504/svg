@@ -3,7 +3,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class Person implements Comparable<Person> {
+public class Person implements Comparable<Person>, Serializable {
 
     private String firstName;
     private String lastName;
@@ -227,6 +227,29 @@ public class Person implements Comparable<Person> {
         for (Person person : peopleSoFar)
             if ((person.getFullName()).equals(getFullName()))
                 throw new AmbiguousPersonException(this.getFullName());
+    }
+
+    public static void toBinaryFile(List<Person> people, String path) throws IOException {
+        FileOutputStream fos = new FileOutputStream(path);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+        oos.writeObject(people);
+
+        oos.close();
+    }
+
+    public static List<Person> fromBinaryFile(String path) throws IOException {
+        FileInputStream fis = new FileInputStream(path);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        List<Person> people = null;
+        try {
+            people = (ArrayList<Person>) ois.readObject();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        ois.close();
+        return people;
     }
 
 }

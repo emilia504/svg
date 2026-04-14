@@ -9,21 +9,8 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
         //testLab5();
-        System.out.println("from");
-        System.out.println(Person.fromCsvLine("Anna Dąbrowska,07.02.1930,22.12.1991,Ewa Kowalska,Marek Kowalski"));
-        System.out.println("substring");
+        testLab6();
 
-        try {
-            System.out.println(Person.methodSubstring("Anna Dąbrowska,07.02.1930,22.12.1921,Ewa Kowalska,Marek Kowalski"));
-        } catch (NegativeLifespanException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            System.out.println(Person.fromCsv("family.csv"));
-        } catch (AmbiguousPersonException e) {
-            System.err.println(e.getMessage());
-        }
     }
 
     private static void testLab5() {
@@ -78,8 +65,37 @@ public class Main {
         }
     }
 
-    public static void testLab6() {
+    public static void testLab6() throws IOException {
+        System.out.println("from");
+        System.out.println(Person.fromCsvLine("Anna Dąbrowska,07.02.1930,22.12.1991,Ewa Kowalska,Marek Kowalski"));
+        System.out.println("substring");
 
+        try {
+            System.out.println(Person.methodSubstring("Anna Dąbrowska,07.02.1930,22.12.1921,Ewa Kowalska,Marek Kowalski"));
+        } catch (NegativeLifespanException e) {
+            throw new RuntimeException(e);
+        }
+
+        List<Person> listFromCsv = new ArrayList<>();
+        try {
+            listFromCsv = Person.fromCsv("family.csv");
+            System.out.println(listFromCsv);
+        } catch (AmbiguousPersonException e) {
+            System.err.println(e.getMessage());
+        }
+
+        try {
+            System.out.println(listFromCsv);
+            Person.toBinaryFile(listFromCsv, "people.bin");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            List<Person> people = Person.fromBinaryFile("people.bin");
+            System.out.println(people);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
