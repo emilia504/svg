@@ -2,6 +2,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Function;
 
 public class Person implements Comparable<Person>, Serializable {
 
@@ -250,6 +251,22 @@ public class Person implements Comparable<Person>, Serializable {
 
         ois.close();
         return people;
+    }
+
+    public String toUML(){
+        Function<Person, String> personToUmlObject = (person) -> {
+            StringBuilder builder = new StringBuilder();
+            builder.append(String.format("object \"%s\" {\n", person.getFullName()));
+            builder.append(String.format("birth = %s", person.birthDate));
+            builder.append("\n}\n");
+            return builder.toString();
+        };
+        StringBuilder builder = new StringBuilder();
+        builder.append("@startuml\n");
+        builder.append(personToUmlObject.apply(this));
+        children.forEach(person -> builder.append(personToUmlObject.apply(person)));
+        builder.append("@enduml\n");
+        return builder.toString();
     }
 
 }

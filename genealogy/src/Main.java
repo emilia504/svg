@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    public static void main(String[] args) throws FileNotFoundException, IOException, AmbiguousPersonException {
 
         //testLab5();
         //testLab6();
@@ -27,6 +27,12 @@ public class Main {
                 
                 @enduml
                 """, "uml", "test");
+
+        List<Person> people = Person.fromCsv("family.csv");
+        Family family = new Family();
+        people.forEach(family::add);
+        Person ewa = family.get("Ewa Kowalska")[0];
+        PlantUMLRunner.generate(ewa.toUML(), "uml", "Ewa");
 
     }
 
