@@ -2,7 +2,9 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Person implements Comparable<Person>, Serializable {
 
@@ -253,20 +255,39 @@ public class Person implements Comparable<Person>, Serializable {
         return people;
     }
 
-    public String toUML(){
-        Function<Person, String> personToUmlObject = (person) -> {
+    public String toUML() {
+        Function<Person, String> alias = person ->
+                person.getFullName().replaceAll("\\s+", "");
+
+        Function<Person, String> personToObject = person -> {
             StringBuilder builder = new StringBuilder();
-            builder.append(String.format("object \"%s\" {\n", person.getFullName()));
-            builder.append(String.format("birth = %s", person.birthDate));
-            builder.append("\n}\n");
+            builder.append(String.format("object \"%s\" as %s {\n",
+                    person.getFullName(),
+                    alias.apply(person)));
+            builder.append(String.format("  birth = %s\n", person.birthDate));
+            builder.append("}\n");
             return builder.toString();
         };
-        StringBuilder builder = new StringBuilder();
-        builder.append("@startuml\n");
-        builder.append(personToUmlObject.apply(this));
-        children.forEach(person -> builder.append(personToUmlObject.apply(person)));
-        builder.append("@enduml\n");
-        return builder.toString();
+
+        StringBuilder objects = new StringBuilder();
+        StringBuilder relations = new StringBuilder();
+
+        // główna osoba
+        objects.append(personToObject.apply(this));
+
+        for (Person child : children) {
+            // obiekt dziecka
+            objects.append(personToObject.apply(child));
+
+            // relacja (rodzic <-- dziecko)
+            relations.append(String.format("%s <-- %s\n",
+                    alias.apply(this),
+                    alias.apply(child)));
+        }
+
+        return String.format("@startuml\n%s\n%s@enduml",
+                objects.toString(),
+                relations.toString());
     }
 
 }
