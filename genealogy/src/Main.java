@@ -9,7 +9,24 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
         //testLab5();
-        testLab6();
+        //testLab6();
+
+        PlantUMLRunner.setJarPath("plantuml-1.2026.2.jar");
+        PlantUMLRunner.generate("""
+                @startuml
+                
+                object "Jan Kowalski" {
+                  birth = 1.1.1970
+                }
+                
+                object "Anna Kowalska" {
+                  birth = 1.1.1990
+                }
+                
+                "Anna Kowalska" --> "Jan Kowalski"
+                
+                @enduml
+                """, "uml", "test");
 
     }
 
