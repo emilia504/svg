@@ -37,6 +37,7 @@ public class Person implements Comparable<Person> {
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", birthDay=" + birthDate +
+                ", deathDate=" + deathDate +
                 ", children=" + children +
                 '}';
     }
@@ -118,7 +119,7 @@ public class Person implements Comparable<Person> {
             catch (NegativeLifespanException exception){
                 exception.getMessage();
                 System.exit(-1);
-                return new Person(name, surname, LocalDate.parse(foundBdate, pattern));
+                return new Person(name, surname, LocalDate.parse(foundBdate, pattern)); // <-- to się nigdy nie wykona
             }
 
         }
@@ -155,7 +156,7 @@ public class Person implements Comparable<Person> {
                     LocalDate.parse(foundBDate, pattern), LocalDate.parse(foundDDate, pattern));
         }
     }
-    public static List<Person> fromCsv(String path) throws FileNotFoundException, IOException {
+    public static List<Person> fromCsv(String path) throws FileNotFoundException, IOException, AmbiguousPersonException {
         File f = new File(path);
 
         BufferedReader fr = new BufferedReader(new FileReader(f));
@@ -165,11 +166,20 @@ public class Person implements Comparable<Person> {
         String line = fr.readLine();
         while (line != null && !line.isBlank())
         {
-            ret.add(fromCsvLine(line));
+            Person person = fromCsvLine(line);
+            person.validateAmbiguity(ret);
+            ret.add(person);
 
             line = fr.readLine();
         }
 
         return ret;
     }
+
+    private void validateAmbiguity(List<Person> peopleSoFar) throws AmbiguousPersonException {
+        for(Person person: peopleSoFar)
+            if((person.getFullName()).equals(getFullName()))
+                throw new AmbiguousPersonException(this.getFullName());
+    }
+
 }

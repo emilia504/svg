@@ -9,12 +9,21 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException, IOException {
 
         //testLab5();
-        //System.out.println("from");
-        //System.out.println(Person.fromCsvLine("Anna Dąbrowska,07.02.1930,22.12.1991,Ewa Kowalska,Marek Kowalski"));
-        //System.out.println("substring");
-        //System.out.println(Person.methodSubstring("Anna Dąbrowska,07.02.1930,22.12.1991,Ewa Kowalska,Marek Kowalski"));
+        System.out.println("from");
+        System.out.println(Person.fromCsvLine("Anna Dąbrowska,07.02.1930,22.12.1991,Ewa Kowalska,Marek Kowalski"));
+        System.out.println("substring");
 
-        System.out.println(Person.fromCsv("family.csv"));
+        try {
+            System.out.println(Person.methodSubstring("Anna Dąbrowska,07.02.1930,22.12.1921,Ewa Kowalska,Marek Kowalski"));
+        } catch (NegativeLifespanException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            System.out.println(Person.fromCsv("family.csv"));
+        } catch (AmbiguousPersonException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     private static void testLab5() {
@@ -64,10 +73,9 @@ public class Main {
         family.add(child4, child5);
 
         Person[] familyMembers = family.get("Maria Nowak");
-        if (familyMembers != null)
-            for (Person member : familyMembers) {
-                System.out.println(member);
-            }
+        if (familyMembers != null) for (Person member : familyMembers) {
+            System.out.println(member);
+        }
     }
 
     public static void testLab6() {
