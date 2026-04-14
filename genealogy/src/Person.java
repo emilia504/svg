@@ -26,6 +26,14 @@ public class Person implements Comparable<Person> {
         this.deathDate = deathDate;
     }
 
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public LocalDate getDeathDate() {
+        return deathDate;
+    }
+
     public boolean adopt(Person child) {
         return this.children.add(child);
     }
@@ -168,16 +176,20 @@ public class Person implements Comparable<Person> {
             if (parentsName.length >= 4 && !parentsName[3].isBlank()) {
                 for (Person p : ret) {
                     if ((p.getFullName()).equals(parentsName[3])) {
-                        p.adopt(person);
-                        break;
+                        boolean parentFound = p.assignChild(person);
+                        if (!parentFound) {
+                            break;
+                        }
                     }
                 }
             }
             if (parentsName.length >= 5 && !parentsName[4].isBlank()) {
                 for (Person p : ret) {
                     if ((p.getFullName()).equals(parentsName[4])) {
-                        p.adopt(person);
-                        break;
+                        boolean parentFound = p.assignChild(person);
+                        if (!parentFound) {
+                            break;
+                        }
                     }
                 }
             }
@@ -186,6 +198,29 @@ public class Person implements Comparable<Person> {
         }
 
         return ret;
+    }
+
+    private boolean assignChild(Person child) {
+        try {
+            this.validateParentingAge(child);
+            this.adopt(child);
+            return true;
+        } catch (ParentingAgeException e) {
+            System.out.printf("Czy %s na pewno jest rodzicem %s?", this.getFullName(), child.getFullName());
+            Scanner scanner = new Scanner(System.in);
+            String answer = scanner.next();
+            if (answer.equals("Y")) {
+                this.adopt(child);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void validateParentingAge(Person child) throws ParentingAgeException {
+        if (this.getBirthDate().isAfter(child.getBirthDate().minusYears(15))
+                || (this.getDeathDate() != null && child.getBirthDate().isAfter(this.getDeathDate())))
+            throw new ParentingAgeException(child, this);
     }
 
     private void validateAmbiguity(List<Person> peopleSoFar) throws AmbiguousPersonException {
