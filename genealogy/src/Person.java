@@ -2,7 +2,6 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class Person implements Comparable<Person> {
 
@@ -74,8 +73,8 @@ public class Person implements Comparable<Person> {
         String parent2name;
         String parent2surname;
 
-        while(line.contains(",,")){
-            line = line.substring(0, line.indexOf(",,")) + ",   ," + line.substring(line.indexOf(",,")+2);
+        while (line.contains(",,")) {
+            line = line.substring(0, line.indexOf(",,")) + ",   ," + line.substring(line.indexOf(",,") + 2);
         }
         line = line + " ";
 
@@ -91,32 +90,28 @@ public class Person implements Comparable<Person> {
         foundBdate = arr[1];
         foundDdate = arr[2];
 
-        if(!arr[3].isBlank()) {
+        if (!arr[3].isBlank()) {
             nameAndSurname = arr[3].split(" ");
             parent1name = nameAndSurname[0];
             parent1surname = nameAndSurname[1];
         }
 
-
-
-        if(!arr[4].isBlank())
-        {
+        if (!arr[4].isBlank()) {
             nameAndSurname = arr[4].split(" ");
 
             parent2name = nameAndSurname[0];
             parent2surname = nameAndSurname[1];
         }
 
-        if(foundDdate.isBlank()){
+        if (foundDdate.isBlank()) {
             return new Person(name, surname, LocalDate.parse(foundBdate, pattern));
-        }
-        else{
-            try{
-                if (LocalDate.parse(foundDdate, pattern).isBefore(LocalDate.parse(foundBdate, pattern))) throw new NegativeLifespanException("negative lifespan");
+        } else {
+            try {
+                if (LocalDate.parse(foundDdate, pattern).isBefore(LocalDate.parse(foundBdate, pattern)))
+                    throw new NegativeLifespanException("negative lifespan");
                 return new Person(name, surname,
                         LocalDate.parse(foundBdate, pattern), LocalDate.parse(foundDdate, pattern));
-            }
-            catch (NegativeLifespanException exception){
+            } catch (NegativeLifespanException exception) {
                 exception.getMessage();
                 System.exit(-1);
                 return new Person(name, surname, LocalDate.parse(foundBdate, pattern)); // <-- to się nigdy nie wykona
@@ -148,14 +143,14 @@ public class Person implements Comparable<Person> {
         parent2name = line.substring(0, line.indexOf(" "));
         parent2surname = line.substring(line.indexOf(" ") + 1);
 
-        if(foundDDate.isEmpty()){
+        if (foundDDate.isEmpty()) {
             return new Person(name, surname, LocalDate.parse(foundBDate, pattern));
-        }
-        else{
-           return new Person(name, surname,
+        } else {
+            return new Person(name, surname,
                     LocalDate.parse(foundBDate, pattern), LocalDate.parse(foundDDate, pattern));
         }
     }
+
     public static List<Person> fromCsv(String path) throws FileNotFoundException, IOException, AmbiguousPersonException {
         File f = new File(path);
 
@@ -164,11 +159,28 @@ public class Person implements Comparable<Person> {
 
         fr.readLine();
         String line = fr.readLine();
-        while (line != null && !line.isBlank())
-        {
+        while (line != null && !line.isBlank()) {
             Person person = fromCsvLine(line);
             person.validateAmbiguity(ret);
             ret.add(person);
+
+            String[] parentsName = line.split(","); //skladowe 3 i 4
+            if (parentsName.length >= 4 && !parentsName[3].isBlank()) {
+                for (Person p : ret) {
+                    if ((p.getFullName()).equals(parentsName[3])) {
+                        p.adopt(person);
+                        break;
+                    }
+                }
+            }
+            if (parentsName.length >= 5 && !parentsName[4].isBlank()) {
+                for (Person p : ret) {
+                    if ((p.getFullName()).equals(parentsName[4])) {
+                        p.adopt(person);
+                        break;
+                    }
+                }
+            }
 
             line = fr.readLine();
         }
@@ -177,8 +189,8 @@ public class Person implements Comparable<Person> {
     }
 
     private void validateAmbiguity(List<Person> peopleSoFar) throws AmbiguousPersonException {
-        for(Person person: peopleSoFar)
-            if((person.getFullName()).equals(getFullName()))
+        for (Person person : peopleSoFar)
+            if ((person.getFullName()).equals(getFullName()))
                 throw new AmbiguousPersonException(this.getFullName());
     }
 
