@@ -10,30 +10,7 @@ public class Main {
 
         //testLab5();
         //testLab6();
-
-        PlantUMLRunner.setJarPath("plantuml-1.2026.2.jar");
-        PlantUMLRunner.generate("""
-                @startuml
-                
-                object "Jan Kowalski" {
-                  birth = 1.1.1970
-                }
-                
-                object "Anna Kowalska" {
-                  birth = 1.1.1990
-                }
-                
-                "Anna Kowalska" --> "Jan Kowalski"
-                
-                @enduml
-                """, "uml", "test");
-
-        List<Person> people = Person.fromCsv("family.csv");
-        Family family = new Family();
-        people.forEach(family::add);
-        Person ewa = family.get("Ewa Kowalska")[0];
-        PlantUMLRunner.generate(ewa.toUML(), "uml", "Ewa");
-
+        testLab7();
     }
 
     private static void testLab5() {
@@ -119,6 +96,52 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void testLab7() throws AmbiguousPersonException, IOException {
+        PlantUMLRunner.setJarPath("plantuml-1.2026.2.jar");
+        PlantUMLRunner.generate("""
+                @startuml
+                                
+                object "Jan Kowalski" {
+                  birth = 1.1.1970
+                }
+                                
+                object "Anna Kowalska" {
+                  birth = 1.1.1990
+                }
+                                
+                "Anna Kowalska" --> "Jan Kowalski"
+                                
+                @enduml
+                """, "uml", "test");
+
+        List<Person> people = Person.fromCsv("family.csv");
+        Family family = new Family();
+        people.forEach(family::add);
+        Person ewa = family.get("Ewa Kowalska")[0];
+        PlantUMLRunner.generate(ewa.toUML(), "uml", "Ewa");
+
+        PlantUMLRunner.generate(Person.toUMLList(people), "uml", "people");
+        for (Person p : people) {
+            System.out.println(p);
+        }
+        Person.sortedByBirthDate(people).stream().map(p -> p.getBirthDate().toString()).forEach(
+                p -> System.out.println(p)
+        );
+
+        System.out.println();
+        System.out.println();
+
+        System.out.println("Długość życia");
+        for (Person p : Person.sortedByLife(people)) {
+            System.out.println(p);
+        }
+        Person.sortedByLife(people).forEach(p -> {
+                    long wiek = p.getDeathDate().getYear() - p.getBirthDate().getYear();
+                    System.out.println(p.getFullName() + " zył(a) " + wiek + " lat");
+                }
+        );
     }
 
 }

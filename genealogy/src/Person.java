@@ -290,4 +290,70 @@ public class Person implements Comparable<Person>, Serializable {
                 relations.toString());
     }
 
+    public static String toUMLList(List<Person> people) {
+        //List<Person> found = new ArrayList<Person>();
+
+        String whole = "";
+        for(Person p : people){
+            Function<Person, String> alias = person ->
+                    person.getFullName().replaceAll("\\s+", "");
+
+            Function<Person, String> personToObject = person -> {
+                StringBuilder builder = new StringBuilder();
+                builder.append(String.format("object \"%s\" as %s {\n",
+                        person.getFullName(),
+                        alias.apply(person)));
+                builder.append(String.format("  birth = %s\n", person.birthDate));
+                builder.append("}\n");
+                return builder.toString();
+            };
+
+            StringBuilder objects = new StringBuilder();
+            StringBuilder relations = new StringBuilder();
+
+            // główna osoba
+
+            //if(!found.contains(p)){
+            //    objects.append(personToObject.apply(p));
+            //}
+
+            for (Person child : p.getChildren()) {
+                //if(found.contains(child)){
+                //    continue;
+                //}
+                //found.add(child);
+
+                // obiekt dziecka
+                objects.append(personToObject.apply(child));
+
+                // relacja (rodzic <-- dziecko)
+                relations.append(String.format("%s <-- %s\n",
+                        alias.apply(p),
+                        alias.apply(child)));
+            }
+            whole = whole + String.format("\n%s\n%s",
+                    objects.toString(),
+                    relations.toString());
+        }
+        return String.format("@startuml\n%s\n@enduml", whole);
+    }
+    public static List<Person> filterNames(List<Person> ppl, String match)
+    {
+        return ppl.stream().filter(p -> p.getFullName().contains(match)).toList();
+    }
+    public static List<Person> sortedByBirthDate(List<Person> ppl) {
+        List<Person> ret = new ArrayList<Person>(ppl);
+        ret.sort(Comparator.naturalOrder());
+        return ret;
+    }
+
+    public static List<Person> sortedByLife(List<Person> peopleData){
+        List<Person> people = new ArrayList<>(peopleData);
+
+        people.removeIf(person -> person.getDeathDate() == null);
+        people.sort(Comparator.comparing(person -> (person.getDeathDate().toEpochDay() - person.getBirthDate().toEpochDay())));
+
+        return people;
+    }
+
 }
