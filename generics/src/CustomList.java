@@ -1,5 +1,8 @@
 import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.stream.Stream;
 
 public class CustomList<T> extends AbstractList<T>
 {
@@ -16,16 +19,46 @@ public class CustomList<T> extends AbstractList<T>
     }
     private Node first, last;
 
+    private int size = 0;
+
+    @Override
+    public boolean add(T t) {
+        addLast(t);
+        return true;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+    @Override
+    public T get(int index) {
+        if (index < 0 || index >=size) {
+            throw new RuntimeException("Index is either too small or too big");
+        }
+
+        Node current = first;
+
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+
+        return current.item;
+    }
+
     public void addLast(T item)
     {
         if (first == null)
         {
             first = new Node(item);
             last = first;
+            size++;
             return;
         }
         last.next = new Node(item);
+        size++;
         last = last.next;
+
     }
 
     public T getLast() {
@@ -38,9 +71,12 @@ public class CustomList<T> extends AbstractList<T>
         {
             first = new Node(item);
             last = first;
+            size++;
             return;
         }
+        size++;
         first = new Node(item, first);
+
     }
 
     public T getFirst()
@@ -52,6 +88,7 @@ public class CustomList<T> extends AbstractList<T>
     {
         T ret = first.item;
         first = first.next;
+        size--;
         return ret;
     }
 
@@ -70,16 +107,39 @@ public class CustomList<T> extends AbstractList<T>
         T ret = last.item;
         current.next = null;
         last = current;
+        size--;
         return ret;
     }
 
-    @Override
-    public T get(int index) {
-        return null;
+    public Iterator<T> iterator(){
+        Iterator<T> iterator = new Iterator<T>() {
+            Node current = first;
+
+            @Override
+            public boolean hasNext() {
+                return current != null;
+            }
+
+            @Override
+            public T next() {
+                Node help = current;
+                current = current.next;
+                return help.item;
+            }
+        };
+
+        return iterator;
     }
 
-    @Override
-    public int size() {
-        return 0;
+    public Stream<T> stream(){
+        ArrayList<T> list = new ArrayList<T>();
+        Node help = first;
+        while(help != null){
+            list.add(help.item);
+            help = help.next;
+        }
+
+        return list.stream();
     }
+
 }
