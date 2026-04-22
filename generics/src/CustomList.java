@@ -1,7 +1,5 @@
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CustomList<T> extends AbstractList<T>
@@ -142,4 +140,7 @@ public class CustomList<T> extends AbstractList<T>
         return list.stream();
     }
 
+    public static <R> List<R> filterByType(List<R> list, Class<? extends Object> type) {
+        return list.stream().filter(i -> type.isAssignableFrom(i.getClass())).collect(Collectors.toList());
+    }
 }
