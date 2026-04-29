@@ -6,5 +6,6 @@ public class Main {
         DeathCauseStatistic stat = DeathCauseStatistic.fromCsvLine(line);
 
         System.out.println(stat.getIcd10());
+        System.out.println(stat.getByAge(52));
     }
 }

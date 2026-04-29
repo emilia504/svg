@@ -1,4 +1,6 @@
 public class DeathCauseStatistic {
+    public record AgeBracketDeaths(int young, int old, int deathCount) {}
+
 
     private String icd10;
 
@@ -15,6 +17,13 @@ public class DeathCauseStatistic {
 
     public String getIcd10() {
         return icd10;
+    }
+    public AgeBracketDeaths getByAge(int age)
+    {
+        int low, high;
+        low = age / 5 * 5;
+        high = low + 4;
+        return new AgeBracketDeaths(low, high, deathByAge[age / 5]);
     }
 
     public static DeathCauseStatistic fromCsvLine(String line) {
