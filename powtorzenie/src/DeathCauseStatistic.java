@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class DeathCauseStatistic {
     public record AgeBracketDeaths(int young, int old, int deathCount) {}
 
@@ -24,6 +26,14 @@ public class DeathCauseStatistic {
         low = age / 5 * 5;
         high = low + 4;
         return new AgeBracketDeaths(low, high, deathByAge[age / 5]);
+    }
+
+    @Override
+    public String toString() {
+        return "DeathCauseStatistic{" +
+                "icd10='" + icd10 + '\'' +
+                ", deathByAge=" + Arrays.toString(deathByAge) +
+                '}';
     }
 
     public static DeathCauseStatistic fromCsvLine(String line) {
