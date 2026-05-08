@@ -19,6 +19,20 @@ public class Main {
         points[2].setY(7.4);
         System.out.println(polygon);
         System.out.println(polygon.toSvg());
+
+        Polygon p1 = new Polygon(new Point[]{new Point(2.0, 6.5)});
+        Polygon p2 = new Polygon(new Point[]{new Point(3.0, 5.5)});
+        Polygon p3 = new Polygon(new Point[]{new Point(4.0, 8.5)});
+
+        SvgScene scene = new SvgScene();
+        scene.addPolygon(p1);
+        scene.addPolygon(p2);
+        scene.addPolygon(p3);
+        System.out.println(scene);
+
+        Polygon p4 = new Polygon(new Point[]{new Point(2.0, 10.5)});
+        scene.addPolygon(p4);
+        System.out.println(scene);
     }
 
     private static void lab1I2DoZad2() {
