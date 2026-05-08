@@ -1,7 +1,12 @@
 public class Segment {
 
-    public Point a;
-    public Point b;
+    private Point a;
+    private Point b;
+
+    public Segment(Point a, Point b) {
+        this.a = new Point(a);
+        this.b = new Point(b);
+    }
 
     public double length() {
         return Math.hypot(a.getX() - b.getX(), a.getY() - b.getY());
@@ -21,4 +26,11 @@ public class Segment {
         return longest;
     }
 
+    @Override
+    public String toString() {
+        return "Segment{" +
+                "a=" + a +
+                ", b=" + b +
+                '}';
+    }
 }

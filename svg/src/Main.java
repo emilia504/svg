@@ -4,7 +4,6 @@ public class Main {
     }
 
     private static void testLab1() {
-        System.out.printf("Hello and welcome!\n");
         Point point = new Point();
         /*
         To działało, gdy pola były publiczne
@@ -26,19 +25,29 @@ public class Main {
         point2.translate(1, 1);
         System.out.println(point2);
         System.out.println(point2.translated(2, 2));
+  /*
+        --Lab 1 - pola publiczne--
         Segment s1 = new Segment();
         s1.a = point1;
         s1.b = point2;
         System.out.println(s1.length());
-
         Segment s2 = new Segment();
         s2.a = point2;
         s2.b = point;
-
         Segment s3 = new Segment();
         s3.a = point1;
         s3.b = point;
+*/
 
+        Segment s1=new Segment(point1, point2);
+        System.out.println(s1);
+        point1.setX(100.0);
+        System.out.println(s1);
+        System.out.println(s1.length());
+        Segment s2 = new Segment(new Point(3.5, 5.3), new Point(4.2, 2.4));
+        System.out.println(s2);
+        Segment s3 = new Segment(point1, point);
+        System.out.println(s3);
         // Tworzenie tablicy Segmentów
         Segment[] segments = {s1, s2, s3};
 
