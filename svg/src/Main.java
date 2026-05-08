@@ -1,10 +1,12 @@
+import java.io.IOException;
+
 public class Main {
-    public static void main(String[] args) {
-        testLab1();
+    public static void main(String[] args) throws IOException {
+        //lab1I2DoZad2();
+        testLab2();
     }
 
-    private static void testLab1() {
-        //lab1I2DoZad2();
+    private static void testLab2() throws IOException {
         Point[] points = {
                 new Point(10.0, 50.0),
                 new Point(50.0, 100.0),
@@ -26,7 +28,7 @@ public class Main {
                 new Point(80.0, 99.5)
         });
         Polygon p2 = new Polygon(new Point[]{
-                new Point(3.0, 5.5),
+                new Point(32.0, 53.5),
                 new Point(32.0, 50.5),
                 new Point(39.0, 55)
         });
@@ -43,6 +45,7 @@ public class Main {
         System.out.println(scene);
 
         System.out.println(scene.toSvg());
+        scene.save("result.svg");
 
         Polygon p4 = new Polygon(new Point[]{new Point(2.0, 10.5)});
         scene.addPolygon(p4);
