@@ -14,6 +14,11 @@ public class Main {
         Polygon polygon = new Polygon(points);
         System.out.println(polygon);
         System.out.println(polygon.toSvg());
+//        points[2] = new Point(2.0, 5.7);
+        points[2].setX(5.0);
+        points[2].setY(7.4);
+        System.out.println(polygon);
+        System.out.println(polygon.toSvg());
     }
 
     private static void lab1I2DoZad2() {
@@ -52,7 +57,7 @@ public class Main {
         s3.b = point;
 */
 
-        Segment s1=new Segment(point1, point2);
+        Segment s1 = new Segment(point1, point2);
         System.out.println(s1);
         point1.setX(100.0);
         System.out.println(s1);
