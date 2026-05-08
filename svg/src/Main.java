@@ -4,6 +4,19 @@ public class Main {
     }
 
     private static void testLab1() {
+        //lab1I2DoZad2();
+        Point[] points = {
+                new Point(10.0, 50.0),
+                new Point(50.0, 100.0),
+                new Point(100.0, 150.0)
+        };
+
+        Polygon polygon = new Polygon(points);
+        System.out.println(polygon);
+        System.out.println(polygon.toSvg());
+    }
+
+    private static void lab1I2DoZad2() {
         Point point = new Point();
         /*
         To działało, gdy pola były publiczne
