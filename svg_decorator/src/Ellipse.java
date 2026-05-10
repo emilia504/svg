@@ -1,6 +1,7 @@
 import java.util.Locale;
 
-public class Ellipse implements Shape{
+public class Ellipse implements Shape {
+
     private Vec2 center;
     private double rx, ry;
 
@@ -17,8 +18,13 @@ public class Ellipse implements Shape{
 
     @Override
     public String toSvg() {
-        return String.format(Locale.ENGLISH,"<ellipse rx=\"%f\" ry=\"%f\" cx=\"%f\" cy=\"%f\"/>",
-                rx,ry,center.x(),center.y());
+        return this.toSvg("");
+    }
+
+    @Override
+    public String toSvg(String param) {
+        return String.format(Locale.ENGLISH, "<ellipse rx=\"%f\" ry=\"%f\" cx=\"%f\" cy=\"%f\" %s/>",
+                rx, ry, center.x(), center.y(), param);
     }
 
 
