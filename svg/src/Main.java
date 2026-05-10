@@ -26,7 +26,7 @@ public class Main {
                 new Point(2.0, 6.5),
                 new Point(40.0, 50.5),
                 new Point(80.0, 99.5)
-        });
+        }, new Style("green", "yellow", 5.0));
         Polygon p2 = new Polygon(new Point[]{
                 new Point(32.0, 53.5),
                 new Point(32.0, 50.5),
