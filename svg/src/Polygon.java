@@ -1,22 +1,28 @@
 import java.util.Arrays;
 import java.util.Locale;
 
-public class Polygon {
+public class Polygon extends Shape {
+
     private Point[] points;
     private Style style = new Style("transparent", "black", 1.0);
 
     public Polygon(Point[] points) {
         //this.points = points;
-        this.points = new Point[points.length];
-        for(int i =0; i < points.length; i++)
-        {
-            this.points[i] = new Point(points[i]);
-        }
+        initPoints(points);
     }
 
     public Polygon(Point[] points, Style style) {
-        this(points);
+        super(style);
+//        this(points); nie można wywołać dwóch konstruktorów po sobie
+        initPoints(points);
         this.style = style;
+    }
+
+    private void initPoints(Point[] points) {
+        this.points = new Point[points.length];
+        for (int i = 0; i < points.length; i++) {
+            this.points[i] = new Point(points[i]);
+        }
     }
 
     @Override
@@ -31,7 +37,7 @@ public class Polygon {
         for (Point point : points) {
             pointsString += point.getX() + "," + point.getY() + " ";
         }
-        return String.format(Locale.ENGLISH, "<polygon points=\"%s\" %s />", pointsString, style.toSvg());
+        return String.format(Locale.ENGLISH, "<polygon points=\"%s\" %s />", pointsString, super.getStyle().toSvg());
     }
 
     public BoundingBox boundingBox() {
