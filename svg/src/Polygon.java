@@ -49,4 +49,10 @@ public class Polygon {
         return new BoundingBox(xMin, yMin, xMax - xMin, yMax - yMin);
     }
 
+    public static Polygon square(Segment segment, Style style) {
+        Segment perpendicular = segment.perpendicular();
+        Point[] points = new Point[]{segment.getA(), perpendicular.getB(), segment.getB(), perpendicular.getA()};
+        return new Polygon(points, style);
+    }
+
 }
