@@ -16,7 +16,7 @@ public class Main {
             System.out.println(dc.toString());
         }
 
-        ICDCodeTabularOptimizedForTime check1 = new ICDCodeTabularOptimizedForTime();
+        ICDCodeTabularOptimizedForTime check1 = new ICDCodeTabularOptimizedForTime("icd10.txt");
         System.out.println(check1.getDescription("A02.1"));
         ICDCodeTabularOptimizedForMemory  check2 = new ICDCodeTabularOptimizedForMemory();
         System.out.println(check2.getDescription("A02.1"));

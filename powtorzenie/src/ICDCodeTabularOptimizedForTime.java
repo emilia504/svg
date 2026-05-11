@@ -1,27 +1,30 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ICDCodeTabularOptimizedForTime implements ICDCodeTabular{
-    File file = new File("icd10.txt");
 
-    //do dokończenia!
+    Map<String, String> descriptions = new HashMap<>();
 
-    @Override
-    public String getDescription(String code) {
+    public ICDCodeTabularOptimizedForTime(String path) {
         try {
-            Scanner scanner = new Scanner(file);
-            String sum;
-            while(scanner.hasNextLine()){
-                String line = scanner.nextLine();
-                if(line.contains(code)){
-                    scanner.close();
-                    return line;
-                }
-            }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            Files.lines(Paths.get(path))
+                    .skip(87)
+                    .map(String::trim)
+                    .filter(line -> line.matches("[A-Z][0-9]{2}.*"))
+                    .map(line -> line.split(" ", 2))
+                    .forEach(line -> descriptions.put(line[0], line[1]));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return "Wrong data";
     }
+
+    public String getDescription(String code) throws IndexOutOfBoundsException {
+        if(!descriptions.containsKey(code))
+            throw new IndexOutOfBoundsException("No such code: "+code);
+        return descriptions.get(code);
+    }
+
 }
