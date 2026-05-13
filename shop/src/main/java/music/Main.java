@@ -1,3 +1,5 @@
+package music;
+
 import auth.AccountManager;
 import database.DatabaseConnection;
 
